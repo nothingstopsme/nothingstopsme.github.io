@@ -1,0 +1,630 @@
+
+
+<html data-theme="dark">
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/Blogs/static/main/css/classless.css">
+
+  <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap');
+
+
+    html[data-theme='dark'] {
+      /* foreground   | background color */
+      --cfg:   #cdcdcd; --cbg:    #1b1b1b;
+      --cdark: #999;    --clight: #343434; /*#333;*/
+      --cmed:  #566;
+      --clink: #1ad;
+      --cemph: #0b9;    --cemphbg: #0b91;
+
+
+      --font-p: 1.2em/1.7 "Fira Mono", monospace;
+      --font-h: .9em/1.5 "Fira Mono", monospace; 
+      --font-c: .9em/1.4 "Fira Mono", monospace;
+
+      --width: 54rem;
+      --navpos: fixed;
+	    --ornament: "";
+    }
+
+    article * {
+      scroll-margin-top: 9rem; 
+    }
+
+    p,
+    article table{
+      margin-top: 3rem;
+    }
+
+    article figure {
+      text-align: center;
+    }
+
+    article figure img {
+      background: #cdcdcd;
+    }
+
+    article h3:before {
+      left: -0.5rem;
+      margin-left: 0rem;
+      font-size: 1.5rem;
+    }
+
+    article h2:before {
+      left: -0.5rem;
+      margin-left: -2rem;
+      font-size: 1.5rem;
+    }
+
+    article h2.reference-title:before {
+      display: none;
+    }
+
+    article ul {
+      overflow: hidden;
+    }
+
+    
+
+    a[href] {
+      text-decoration: none;
+    }
+
+    
+
+    nav ul:not(:first-child) li {
+      padding: 0;
+      margin: 0;
+    }
+
+
+    nav input[type="checkbox"]:hover + label, 
+    nav input[type="checkbox"]:focus + label, 
+    nav a.nav-active,
+    nav a:hover, 
+    nav a:focus {
+      background: black;
+    }
+
+
+    nav li > a {
+      display: block;
+    }
+
+    nav > span {
+      height: inherit;
+      background: inherit;
+    }
+
+    nav > span > input[type="checkbox"] {
+      width: 0;
+    }
+
+    nav > span > input[type="checkbox"] + label { 
+      color: var(--clink); cursor: pointer; 
+    }
+
+
+    nav > span > ul {
+      background: inherit;
+      display: inline-block;
+      width: auto;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav > span > input[type="checkbox"] + label {
+      height: inherit;
+      padding: 1rem 0.6rem;
+    }
+
+    nav > span > ul > li {
+      height: 4rem;
+      display: inline-block;
+    }
+
+    nav > span > ul > li > a {
+      height: inherit;
+      padding: 1rem 0.6rem;
+    }
+
+   
+    nav > span.left-menu {
+      float: left;
+    }
+
+    nav > span.left-menu > input[type="checkbox"] + label {
+      float: left;
+      display: none;
+    }
+
+    nav > span.left-menu > input[type="checkbox"] + label + ul {
+      float: left;
+      clear: left;
+      
+    }
+    
+    nav > span.left-menu > input[type="checkbox"] + label + ul > li{
+      float: left;
+    }
+
+     
+    nav > span.right-menu {
+      float: right;
+    }
+
+
+    nav > span.right-menu > input[type="checkbox"] + label {
+      float: right;
+      display: inline-block;
+    }
+
+    nav > span.right-menu > input[type="checkbox"] + label + ul {
+      display: none;
+      float: right;
+      clear: right;
+      overflow-y: auto;
+      max-height: 50vh;
+
+      border: var(--border);
+      border-radius: 4px;
+
+    }
+
+    nav > span.right-menu > input[type="checkbox"] + label + ul > li {
+      display: block;
+    }
+
+    nav > span.right-menu > input[type="checkbox"]:hover + label + ul,
+    nav > span.right-menu > input[type="checkbox"]:focus + label + ul,
+    nav > span.right-menu > input[type="checkbox"] ~ ul:hover {
+        display: inline-block;
+    }
+
+   
+    body>nav {
+      
+      left: max(calc(50vw - var(--width)/2), 0vw);
+      right: max(calc(50vw - var(--width)/2), 0vw);
+      width: auto;
+      height: 4rem;
+      box-shadow: none;
+      z-index: 100;
+      overflow-y: visible;
+
+    }
+
+		article div.post-tags span {
+			white-space: nowrap;
+		}
+
+    article div.post-tags span:not(:first-child):before
+    {
+			content: "|";
+    }
+  
+   
+    @media (max-width: 40rem) 
+    {
+      nav > span.left-menu > input[type="checkbox"] + label + ul > li {
+        float: none;
+        display: block;
+      }
+   
+      nav > span.left-menu > input[type="checkbox"] + label {
+        display: inline-block;
+      }
+      
+      nav > span.left-menu > input[type="checkbox"] + label + ul {
+        display: none;
+      }
+
+      nav > span.left-menu > input[type="checkbox"]:hover + label + ul,
+      nav > span.left-menu > input[type="checkbox"]:focus + label + ul,
+      nav > span.left-menu > input[type="checkbox"] + label + ul:hover {
+        display: inline-block;
+     
+
+        overflow-y: auto;
+        max-height: 50vh;
+
+        border: var(--border);
+        border-radius: 4px;
+      }
+          
+
+    }
+
+  </style>
+
+  <title>
+DDPM through the Lens of SDE
+</title>
+  
+	
+  </head>
+
+<body style="margin-top: 0; padding-top: 0;">
+<nav>
+  <span class="left-menu">
+  <input type="checkbox" id="nav-menu" />
+  <label for="nav-menu">
+  &nbsp;<i class="fas fa-bars"></i>&nbsp;&#x25BE;
+  </label>
+
+  <!--<a href="#">&nbsp;<i class="fas fa-bars"></i>&nbsp;&#x25BE;</a>-->
+  <ul>
+    <!--<li class="menu-hamburger">
+    </li>-->
+    
+      
+          
+          <li>
+            <a href="/Blogs/archives/"
+            
+            
+
+            >Archives</a>                            
+          </li>
+      
+          
+          <li>
+            <a href="/Blogs/tags/"
+            
+            
+
+            >Tags</a>                            
+          </li>
+      
+    
+  </ul>
+  </span>
+
+  
+  
+
+</nav>
+
+<main style='margin-top: 4rem; padding: 0 2rem; overflow-y: hidden;'>
+  <article>
+      
+<script type="text/javascript"
+          src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    /*inlineMath: [['$','$'], ['\\(','\\)']],*/
+    inlineMath: [['$','$']],
+    processEscapes: true},
+    jax: ["input/TeX","input/MathML","input/AsciiMath","output/CommonHTML"],
+    extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","AssistiveMML.js", "[Contrib]/a11y/accessibility-menu.js"],
+    TeX: {
+    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"],
+    equationNumbers: {
+    autoNumber: "AMS"
+    }
+  }
+});
+</script>
+
+
+<h1><abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr> through the Lens of <abbr title="Stochastic Differential Equation">SDE</abbr></h1>
+
+
+<div class="post-tags">
+  
+  <span>
+  <i class="fas fa-calendar"></i>&nbsp;<time>06.Dec.2025</time>
+  </span>
+  
+  
+  
+  <span>
+  <i class="fas fa-tags"></i>&nbsp;Probability
+  </span>
+  
+  
+  
+  <span>
+  <i class="fas fa-tags"></i>&nbsp;MachineLearning
+  </span>
+  
+  
+  
+  <span>
+  <i class="fas fa-tags"></i>&nbsp;SDE
+  </span>
+  
+  
+</div>
+
+
+<style type="text/css">
+div.alphabetic_list_followed + ol {
+list-style-type: upper-alpha;
+}
+</style>
+
+
+<p>Presented from the perspective of probabilistic modelling, <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr> and its likes are probably the most intuitive construct of diffusion models to me, who constantly find the concept of score matching and the links to the scary <strong>S</strong>tochastic <strong>D</strong>ifferential <strong>E</strong>quations less friendly; it is not until recently that my latest encountering of this topic has opened my eyes to the elegancy of such interpretation (after the struggle over the intimidating math part of <abbr title="Stochastic Differential Equation">SDE</abbr>), and this post notes my fresh acquaintance with the connection between <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr> and its <abbr title="Stochastic Differential Equation">SDE</abbr> equivalent.</p>
+<h2>Mathematical Facts</h2>
+<p>Let us first go through a few mathematical facts that will be used later in establishing the aforementioned connection:</p>
+<div class="alphabetic_list_followed"></div>
+<ol>
+<li>
+<p><a name="fact_A"></a> By definition, a <abbr title="Stochastic Differential Equation">SDE</abbr> is a differential equation involving stochastic processes; in our particular case, we are interested in SDEs of the following form
+$$
+\begin{equation}
+\begin{aligned}
+& dx = f(x, t) dt + g(t) dW
+\end{aligned}
+\label{eq:targeted_forward_SDE}
+\end{equation}
+$$
+where</p>
+<ul>
+<li>$x \in \mathbb{R}^d$ and $t \in \mathbb{R}$ correspond to the observations and time, respectively.</li>
+<li>$W$ represents the <a href="https://en.wikipedia.org/wiki/Wiener_process">Wiener process</a>, which is a stochastic process following the rule of independent Gaussian increments through time as $dW = W_{t + dt} - W_t \sim \mathcal{N}(0, dt * I)$.</li>
+<li>$f(x, t): \mathbb{R}^d \times \mathbb{R} \to \mathbb{R}^d$ (called drift coefficient) and $g(t): \mathbb{R} \to \mathbb{R}$ (called diffusion coefficient) are functions which control how $x$ changes at some observation $x$ and time $t$.</li>
+</ul>
+<p>Note that because $dW$ follows an isotropic Gaussian distribution with $0$ mean and $dt$ variance, $dx$ will in turn follow an isotropic Gaussian with $f(x, t) dt$ mean and $g(t)^2 dt$ variance, implying the nature of randomness of $x$ governed by some underlying probabilistic density $p(x, t)$; in fact, given an initial $x_0$ at time $t = 0$, one can approximately sample from that distribution by discretising continuous time with a step size of $\Delta t$ and creating a trajectory of $x$ samples
+$$
+\begin{equation}
+\begin{aligned}
+& x_{s+1} = x_s + \Delta x \\
+& \phantom{x_{s+1}} = x_s + f(x_s, s * \Delta t) * \Delta t + g(s * \Delta t) * \sqrt{\Delta t} * z
+\end{aligned}
+\label{eq:discretised_SDE_forward_update}
+\end{equation}
+$$
+where $z \sim \mathcal{N}(0, I)$. This is exactly how certain numerical methods such as <a href="https://en.wikipedia.org/wiki/Euler%E2%80%93Maruyama_method">Euler–Maruyama method</a> solve <abbr title="Stochastic Differential Equation">SDE</abbr> problems.</p>
+</li>
+<li>
+<p><a name="fact_B"></a> According to the <a href="https://en.wikipedia.org/wiki/Fokker%E2%80%93Planck_equation">Fokker–Planck equation</a>, the underlying density $p(x, t)$ derived from $\eqref{eq:targeted_forward_SDE}$ has this partial derivative with respect to time $t$:
+$$
+\begin{equation}
+\begin{aligned}
+& \frac{\partial p(x, t)}{\partial t} = -\sum_{i=0}^{d-1} \frac{\partial \big( f(x, t) p(x, t) \big)}{\partial x_i} + \sum_{i=0}^{d-1} \frac{1}{2} \frac{\partial^2 \big( g(t)^2 p(x, t) \big)}{\partial x_i^2} \\
+& \phantom{\frac{\partial p(x, t)}{\partial t}} = -{\nabla}_x \cdot \big( f(x, t) p(x, t) \big) + \frac{1}{2} {\nabla}_x \cdot {\nabla}_x \big( g(t)^2 p(x, t) \big)
+\end{aligned}
+\label{eq:forward_Fokker_Planck_equation}
+\end{equation}
+$$
+Let $r = 1 - t$, then $\frac{\partial p(x, r)}{\partial r}$ can be expressed based on the result of $\eqref{eq:forward_Fokker_Planck_equation}$ as:
+$$
+\begin{align}
+& \frac{\partial p(x, r)}{\partial r} = \frac{\partial t}{\partial r} \frac{\partial p(x, 1-t)}{\partial t} = -\frac{\partial p(x, 1-t)}{\partial t} \nonumber \\
+& = -{\nabla}_x \cdot \big( -f(x, 1-t) p(x, 1-t) \big) \nonumber \\
+& \phantom{= \,} - \frac{1}{2} {\nabla}_x \cdot {\nabla}_x \big( g(1-t)^2 p(x, 1-t) \big) \nonumber \\
+& = -{\nabla}_x \cdot \big( -f(x, r) p(x, r) + g(r)^2 {\nabla}_x p(x, r) \big) \nonumber \\
+& \phantom{= \,} + \frac{1}{2} {\nabla}_x \cdot {\nabla}_x \big( g(r)^2 p(x, r) \big) \nonumber \\
+& = -{\nabla}_x \cdot \nonumber \\
+& \phantom{= \,} \Bigg( \underbrace{\bigg( -f(x, r) + g(r)^2 {\nabla}_x log \big( p(x, r) \big) \bigg)}_{\hat{f}(x, r)} p(x, r) \Bigg) \nonumber \\
+& \phantom{= \,} + \frac{1}{2} {\nabla}_x \cdot {\nabla}_x \big( g(r)^2 p(x, r) \big) \nonumber \\
+& = -{\nabla}_x \cdot \big( \hat{f}(x, r) p(x, r) \big) + \frac{1}{2} {\nabla}_x \cdot {\nabla}_x \big( g(r)^2 p(x, r) \big) \label{eq:backward_Fokker_Planck_equation}
+\end{align}
+$$
+Again per the Fokker–Planck equation, $\eqref{eq:backward_Fokker_Planck_equation}$ also corresponds to a <abbr title="Stochastic Differential Equation">SDE</abbr>
+$$
+\begin{equation}
+\begin{aligned}
+& dx = \hat{f}(x, r) dr + g(r) dW \\
+& \phantom{dx} = \bigg(-f(x, r) + g(r)^2 \nabla log \big( p(x, r) \big) \bigg) dr + g(r) dW
+\end{aligned}
+\label{eq:targeted_backward_SDE}
+\end{equation}
+$$
+that shares the same underlying density function $p(x, t) = p(x, 1-r)$. Importantly, $\eqref{eq:targeted_backward_SDE}$ allows us to create a trajectory of $x$ samples from that distribution via the same approximation technique of $\eqref{eq:discretised_SDE_forward_update}$, but in a reverse fashion as sampling will start at $r = 0 \to t = 1$ and proceed toward $r = 1 \to t = 0$, i.e. going <strong>backward</strong> in time.</p>
+</li>
+<li>
+<p><a name="fact_C"></a> Given an isotropic Gaussian distribution with a density function $p(x) = \mathcal{N}(x; \mu, \sigma I)$ over the support $x \in \mathbb{R}^d$, the corresponding score function $S(x): \mathbb{R}^d \to \mathbb{R}^d$, which is defined to be the gradient of the natural logarithm of that density function with respect to $x$, has this particular form:
+$$
+\begin{equation}
+\begin{aligned}
+& S(x) = \nabla_x log \big( p(x) \big) \\
+& = \nabla_x -\frac{1}{2 \sigma^2} (x^T x - 2 \mu^T x + \mu^T \mu) \\
+& = -\frac{1}{2 \sigma^2} (2x - 2\mu) \\
+& = -\frac{1}{\sigma} \underbrace{\frac{x - \mu}{\sigma}}_{= \epsilon} \\
+& = -\frac{1}{\sigma} \epsilon
+\end{aligned}
+\label{eq:score_of_gaussian}
+\end{equation}
+$$
+Note that $\epsilon = \frac{x - \mu}{\sigma}$ can be viewed as the normalised version of $x$ (having $0$ mean and unit variance), and hence it follows a standard Gaussian.</p>
+</li>
+<li>
+<p><a name="fact_D"></a> In Calculus, taking the integral of a function $f(x): R \to R$ from $a$ to $b$ can be viewed as summing over all non-overlapping partitions with a infinitesimal size $\Delta x$ in $[a, b]$, i.e.
+$$
+\begin{equation}
+\begin{aligned}
+& \int_a^b f(x) dx = \lim_{\Delta x \to 0} \sum_{x_i \in \text{partitions}} f(x_i) \Delta x
+\end{aligned}
+\label{eq:sum_integral}
+\end{equation}
+$$
+By extending this concept to multiplication, we can also define <em>product integral</em> that calculates products over infinitesimal partitions; for example, if multiplication involved is commutative, the following form (called Type-I)
+$$
+\begin{equation}
+\prod_a^b \big (1+f(x)dx \big) = \lim_{\Delta x \to 0} \prod_{x_i \in \text{partitions}} \big(1 + f(x_i) \Delta x \big)
+\label{eq:product_integral_type_1_definition}
+\end{equation}
+$$
+demonstrates a particular type of product integral, and can be shown to be equal to
+$$
+\begin{equation}
+\prod_a^b \big (1+f(x)dx \big) = exp\big(\int_a^b f(x) dx \big)
+\label{eq:product_integral_type_1_result}
+\end{equation}
+$$
+Interested readers are kindly referred to <a href="https://www.karlin.mff.cuni.cz/~slavik/product/product_integration.pdf" title="Slavík, Antonín. Product integration, its history and applications. Vol. 29. Prague: Matfyzpress, 2007.">this document</a> (Lemma 2.4.2 @ page 29, Theorem 2.4.3 @ page 30, Example 2.5.6 @ Page 40) for a complete proof.</p>
+</li>
+<li>
+<p><a name="fact_E"></a> Given $x \in \{\mathbb{R} \, | \,  x \le 1 \}$, via Taylor Series expanded at $0$ one can approximate $\sqrt{1 - x}$ with
+$$
+\begin{equation}
+\sqrt{1- x} = 1 - \frac{1}{2} x + O(x^2) \approx 1 - \frac{1}{2} x
+\label{eq:sqrt_of_one_minus_x}
+\end{equation}
+$$
+and $\frac{1}{\sqrt{1 - x}}$ with
+$$
+\begin{equation}
+\frac{1}{\sqrt{1- x}} = 1 + \frac{1}{2} x + O(x^2) \approx 1 + \frac{1}{2} x
+\label{eq:one_over_sqrt_of_one_minus_x}
+\end{equation}
+$$
+, both of which have a small approximation error when $x$ is close to $0$.</p>
+</li>
+</ol>
+<h2><a name="Linking_DDPM_to_SDE"></a> Linking <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr> to <abbr title="Stochastic Differential Equation">SDE</abbr></h2>
+<p>While obscure at the first glance, it turns out that the noising/denoising process definition adopted by <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr> can be transformed (with a little bit of approximation) into SDEs once the constraint of discreteness on time is relaxed. To show that, considering a $T$-step noising/denoising process, where</p>
+<ul>
+<li>$x_0 \in \mathbb{R}^d$ stands for an original data point, and $x_1, \dotsc, x_T$ represent noisy versions of $x_0$ at various time steps.</li>
+<li>$\beta_1, \dotsc, \beta_T \in \mathbb{R}$ are parameters controlling the degree of randomness at each time step, and are defined as $\beta_s = \beta_1 + \frac{s-1}{T-1} (\beta_T - \beta_1)$ with $\beta_T > \beta_1$.</li>
+<li>The noising process is realised by noise injection: $x_s = \sqrt{1 - \beta_s} x_{s-1} + \sqrt{\beta_s} z_s$, with one random variable $z_s \sim \mathcal{N}(0, I)$ for each time step $s$; this implies the probability $q(x_s|x_{s-1}) = \mathcal{N}(x_s; \sqrt{1 - \beta_s} * x_{s-1}, \beta_s I)$.</li>
+<li>Let $\alpha_s = \prod_{b=1}^s (1 - \beta_b)$, and it can be shown that $q(x_s|x_0) = \mathcal{N} \big( x_s; \sqrt{\alpha_s} * x_0, (1 - \alpha_s) I \big)$, which matches the probabilistic relationships of every $q(x_s|x_{s-1})$.</li>
+<li>The denoising process at each time step $s$ follows a Gaussian distribution $p(x_{s-1}|x_s) = \mathcal{N}(x_{s-1}; \frac{1}{\sqrt{1-\beta_s}}(x_s - \frac{\beta_s}{\sqrt{1-\alpha_s}} \epsilon_{\theta}(x_s, s)), \beta_s I)$, with the parameterised function $\epsilon_{\theta}(x_s, s)$ predicting the noise injected in the noising process; this also implies $x_{s-1} = \frac{1}{\sqrt{1-\beta_s}}(x_s - \frac{\beta_s}{\sqrt{1-\alpha_s}} \epsilon_{\theta}(x_s, s)) + \sqrt{\beta_s} \bar{z}_s$ with the random variable $\bar{z}_s \sim \mathcal{N}(0, I)$.</li>
+</ul>
+<p>The time configuration above is effectively discretisation of the time line $t \in [0, T]$ by $T$ steps with each step size equal to $\Delta t = 1$; thus we can generalise it by defining functions $x(t)$, $z(t)$, $\bar{z}(t)$, $\beta(t)$, and $\alpha(t)$ over the continuous time $t$, such that</p>
+<ul>
+<li>$x(t = 0) = x_{0}, \dotsc, x(T-1) = x_{T}$</li>
+<li>$z(t = 1) = z_{1}, \dotsc, z(T) = z_{T}$</li>
+<li>$\bar{z}(t = 1) = \bar{z}_{1}, \dotsc, \bar{z}(T) = \bar{z}_{T}$</li>
+<li>$\beta(t) = \beta_1 + \frac{t-1}{T-1} (\beta_T - \beta_1)$</li>
+<li>$\alpha(t) = \prod_{b=1}^t (1 - \beta(b)) = \frac{\prod_{b=0}^t (1 - \beta(b) * \Delta t)}{1 - \beta(0)}$</li>
+</ul>
+<p>Then the noising process can be rewritten in terms of those functions:
+$$
+\begin{align}
+& x(t) = \sqrt{1 - \beta(t)} x(t-1) + \sqrt{\beta(t)} z(t) \nonumber \\
+& x(t) = \sqrt{1 - \beta(t) \Delta t} x(t-\Delta t) + \sqrt{\beta(t) \Delta t} z(t) \nonumber \\
+& \approx (1 - \frac{1}{2} \beta(t) \Delta t)  x(t-\Delta t) + \sqrt{\beta(t)} \sqrt{\Delta t} z(t) \label{eq:forward_Delta_x_approx} \\
+& \nonumber \\
+& \implies \nonumber \\
+& \nonumber \\ 
+& x(t) - x(t-\Delta t) = \Delta x \nonumber \\
+& = - \frac{1}{2} \beta(t) x(t-\Delta t) \Delta t + \sqrt{\beta(t)} \sqrt{\Delta t} z(t) \label{eq:forward_Delta_x}
+\end{align}
+$$
+Note that the introduction of $\Delta t$ does not invalidate the equation since $\Delta t = 1$, and the approximation of $\eqref{eq:forward_Delta_x_approx}$ results from invoking $\eqref{eq:sqrt_of_one_minus_x}$ of the <a href="#fact_E">fact E</a>. Now taking $\Delta t$ to $0$ in the limit to have $\eqref{eq:forward_Delta_x}$ applicable to any point in our time line:
+$$
+\begin{equation}
+\begin{aligned}
+& \lim_{dt = \Delta t \to 0} \Delta x = dx \\
+& = -\frac{1}{2} \beta(t) x(t) dt + \sqrt{\beta(t)} \sqrt{dt} z(t) \\
+& = \underbrace{-\frac{1}{2} \beta(t) x(t)}_{f\big( x(t), t \big)} dt + \underbrace{\sqrt{\beta(t)}}_{g(t)} dW \\
+& = f \big(x(t), t \big) dt + g(t) dW
+\end{aligned}
+\label{eq:DDPM_forward_as_SDE}
+\end{equation}
+$$
+where $dW = \sqrt{dt} z(t) \sim \mathcal{N}(0, \sqrt{dt} I)$ for all $t$; we end up with a <abbr title="Stochastic Differential Equation">SDE</abbr> governing the same noising process (approximately).</p>
+<p>Similarly, the denoising process can also be reexpressed in terms of those functions:
+$$
+\begin{align}
+& x(t-1) \nonumber \\
+& = \frac{1}{\sqrt{1-\beta(t)}}(x(t) - \frac{\beta(t)}{\sqrt{1-\alpha(t)}} \epsilon_{\theta}(x(t), t)) + \sqrt{\beta(t)} \bar{z}(t) \nonumber \\
+& \nonumber \\
+& \implies \nonumber \\
+& \nonumber \\
+& x(t - \Delta t) \nonumber \\
+& = \frac{1}{\sqrt{1-\beta(t) \Delta t}}(x(t) + \beta(t) \Delta t \underbrace{\frac{-\epsilon_{\theta}(x(t), t)}{\sqrt{1-\alpha(t)}}}_{= S_{\theta}(x(t), t)}) + \sqrt{\beta(t) \Delta t} \bar{z}(t) \nonumber \\
+& \approx (1 + \frac{1}{2} \beta(t) \Delta t) (x(t) + \beta(t) S_{\theta}(x(t), t) \Delta t) + \sqrt{\beta(t)} \sqrt{\Delta t} \bar{z}(t) \nonumber \\
+& = x(t) + \frac{1}{2} \beta(t) x(t) \Delta t + \beta(t) S_{\theta}(x(t), t) \Delta t \nonumber \\
+& \phantom{= \,} + \frac{1}{2} S_{\theta}(x(t), t) (\beta(t) \Delta t)^2 + \sqrt{\beta(t)} \sqrt{\Delta t} \bar{z}(t) \nonumber \\
+& \nonumber \\
+& \implies \nonumber \\
+& \nonumber \\
+& x(t-1) - x(t) = \Delta x \nonumber \\
+& = \big( \frac{1}{2} \beta(t) x(t) + \beta(t) S_{\theta}(x(t), t) \big) \Delta t \nonumber \\
+& \phantom{= \,} + \frac{1}{2} S_{\theta}(x(t), t) (\beta(t) \Delta t)^2 + \sqrt{\beta(t)} \sqrt{\Delta t} \bar{z}(t) \label{eq:backward_Delta_x}
+\end{align}
+$$
+Then through</p>
+<ul>
+<li>Invoking the <a href="#fact_C">fact C</a> to interpret $S_{\theta}(x(t), t) = -\frac{\epsilon_{\theta}(x(t), t)}{\sqrt{1-\alpha(t)}} = \nabla log \bigg( p_{\theta} \big( x(t)\big) \bigg)$ as the score function for the density estimate $p_{\theta}\big(x(t)\big)$ with variance equal to $1 - \alpha(t)$.</li>
+<li>Substituting $f\big(x(t), t \big)$ for $-\frac{1}{2} \beta(t) x(t)$.</li>
+<li>Substituting $g(t)$ for $\sqrt{\beta(t)}$.</li>
+<li>Substituting $d \bar{W} \sim \mathcal{N}(0, \sqrt{dt} I)$ for $\sqrt{dt} \bar{z}(t)$ for all $t$.</li>
+</ul>
+<p>we can further manipulate $\eqref{eq:backward_Delta_x}$ while taking $\Delta t$ to $0$ in the limit:
+$$
+\begin{equation}
+\begin{aligned}
+& \lim_{\Delta t \to 0} \Delta x = dx \\
+& = \Bigg( \underbrace{\frac{1}{2} \beta(t) x(t)}_{=-f \big(x(t), t \big)} + \underbrace{\beta(t)}_{= g(t)^2} \nabla log \bigg( p_{\theta} \big( x(t)\big) \bigg) \Bigg) dt \\
+& \phantom{= \,}  + \frac{1}{2} \nabla log \bigg( p_{\theta} \big( x(t)\big) \bigg)  (\beta(t) dt)^2 + \underbrace{\sqrt{\beta(t)}}_{= g(t)} \underbrace{\sqrt{dt} \bar{z}(t)}_{= d \bar{W}} \\
+& \approx \Bigg( -f \big(x(t), t \big) + g(t)^2 \nabla log \bigg( p_{\theta} \big( x(t)\big) \bigg) \Bigg) dt + g(t) d \bar{W}
+\end{aligned}
+\label{eq:DDPM_backward_as_SDE}
+\end{equation}
+$$
+and obtain the same "backward-in-time" <abbr title="Stochastic Differential Equation">SDE</abbr> as stated in the <a href="#fact_B">fact B</a> for $\eqref{eq:DDPM_forward_as_SDE}$.</p>
+<p>Noteworthily, another way to look at such a connection is that, given $\eqref{eq:DDPM_forward_as_SDE}$, not only is there an equivalent nosing process under the framework of <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr>, but we can also immediately read out its backward-in-time version of <abbr title="Stochastic Differential Equation">SDE</abbr>, which describes the associated denoising process; moreover, if we solve the two SDEs via the Euler–Maruyama method referenced in the <a href="#fact_A">fact A</a> with $\Delta t = 1$, we essentially go back from $\eqref{eq:DDPM_forward_as_SDE}$/$\eqref{eq:DDPM_backward_as_SDE}$ to their original update rules over discrete time steps, and effectively perform the corresponding noising/denoising process from the perspective of <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr>.</p>
+<h2>A Side Note</h2>
+<p>While this post is largely inspired by <a href="https://arxiv.org/pdf/2011.13456" title="Song, Yang, et al. &quot;Score-based generative modeling through stochastic differential equations.&quot; arXiv preprint arXiv:2011.13456 (2020)">this work</a>, please note that the derivation from noising/denoising rules to their <abbr title="Stochastic Differential Equation">SDE</abbr> equivalents presented here does not completely follow the one given there, and the main distinction lies in the way that $\Delta t$ is introduced to help relax the constraint of discreteness on time.</p>
+<p>Specifically, when defining the $\beta(t)$ function, the authors of the referenced paper start from scaling the original discrete version of $\beta_s$:
+$$
+\begin{equation}
+\begin{aligned}
+& \bar{\beta}_s = \beta_s * T = \underbrace{\beta_1 * T}_{= \bar{\beta}_1} + \frac{s-1}{T-1} (\underbrace{\beta_T * T}_{= \bar{\beta}_T} - \underbrace{\beta_1 * T}_{= \bar{\beta}_1})
+\end{aligned}
+\label{eq:scaled_beta_s}
+\end{equation}
+$$
+and argue that when $T \to \infty$, each discrete step becomes infinitesimal so that $\eqref{eq:scaled_beta_s}$ is generalised to $\beta(t) = \bar{\beta}_1 + t (\bar{\beta}_T - \bar{\beta}_1)$ over continuous time $t$; and due to the presence of scalling factor $T$, during derivation $\beta_s$ should be replaced by $\beta(t = \frac{s-1}{T-1}) * \frac{1}{T} = \beta(t) * \Delta t$, where $\Delta t \to 0$ as $T \to \infty$</p>
+<p>However, that argument seems flawed to me, in that if all the derived results rely on taking $T$ to $\infty$, then we will have a infinitely large $\bar{\beta}_s = \lim_{T \to \infty} \beta_s * T$ to begin with, leading to a exploding $\beta(t)$ and terms calculated from it. So instead of enforcing the relationship $\Delta t = \frac{1}{T}$, in this post $T$ and $\Delta t$ are considered independent with each other and of the following meaning:</p>
+<ul>
+<li>$T$ is a time length <strong>constant</strong>.</li>
+<li>$\Delta t$ represents adjustable time granularity that determines how many discrete steps need to be taken given a fixed time length $T$.</li>
+</ul>
+<p>such that taking $T$ discrete time steps in <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr> can be interpreted as going along a time line of a length $T$ with $\Delta t$ chosen to be $1$. Under that interpretation, we can exploit the fact that $\Delta t = 1$, and multiply terms by $\Delta t$ or replace $1$ with $\Delta t$ in equations wherever is appropriate without invalidating them (as shown in the previous <a href="#Linking_DDPM_to_SDE">section</a>). Moreover, now that $\Delta t$ is independent of $T$, taking $\Delta t \to 0$ has nothing to do with the fixed value $T$, and in the limit only the time index $s$ gets relaxed to the continuous time $t$, which gives rise to a different definition of $\beta(t) = \beta_1 + \frac{t-1}{T-1} (\beta_T - \beta_1)$ involving no problematic scaling factors.</p>
+<p>Note that this new definition of $\beta(t)$ also changes what the $\alpha(t)$ defined in the previous <a href="#Linking_DDPM_to_SDE">section</a> is evaluated to (invoking the <a href="#fact_D">fact D</a> to compute the product integral that emerges) in the limit:
+$$
+\begin{equation}
+\begin{aligned}
+& \alpha(t) = \lim_{\Delta t \to 0} \frac{\prod_{b=0}^t (1 - \beta(b) * \Delta t)}{1 - \beta(0)} \\
+& = \frac{1}{1 - \beta(0)} \int_{b=0}^t (1 - \beta(b) db) \\
+& = \frac{1}{1 - \beta(0)} exp \big( -t \beta_1 - (\frac{1}{2} t^2 - t) \frac{\beta_T - \beta_1}{T-1} \big)
+\end{aligned}
+\label{eq:alpha_t}
+\end{equation}
+$$
+and in turn brings about a new generalised version of $q(x(t)|x(0))$ for $q(x_s|x_0) = \mathcal{N}\big(x_s; \sqrt{\alpha_s} * x_0, (1 - \alpha_s) I \big)$:
+$$
+\begin{equation}
+\begin{aligned}
+& q(x(t)|x(0)) \\
+& = \mathcal{N} \Bigg(x(t); \sqrt{\frac{1}{1 - \beta(0)} exp \big(-t \beta_1 - (\frac{1}{2} t^2 - t) \frac{\beta_T - \beta_1}{T-1} \big)} * x_0, \\
+& \phantom{= \mathcal{N} \bigg(x(t); \,} \bigg(1 - \frac{1}{1 - \beta(0)} exp \big(-t \beta_1 - (\frac{1}{2} t^2 - t) \frac{\beta_T - \beta_1}{T-1} \big) \bigg) I \Bigg)
+\end{aligned}
+\label{eq:q_of_x_t_given_x_0}
+\end{equation}
+$$
+Despite appearing dissimilar compared with the result provided in the referenced paper, $\eqref{eq:q_of_x_t_given_x_0}$ over the continuous time $t$ is indeed consistent with its discrete counterpart $q(x_s|x_0)$, as can be seen from the sanity check below:</p>
+<p>
+<figure><img alt="sanity_check.png" src="/Blogs/static/main/images/DDPM-As-SDE/sanity_check.png" /><figcaption>Comparing mean scaling factors and varinces calculated for $q(x_s|x_0)$ and $q(x(t)|x(0))$ with $T = 1000$, $\beta_1 = 1e-4$, and $\beta_T = 2e-2$. The parameters of $q(x(t)|x(0))$ derived from the new definition of $\beta(t)$ and those defined under <abbr title="Denoising Diffusion Probabilistic Models">DDPM</abbr> remain well matched.</figcaption>
+</figure>
+<a name="sanity_check_result_fig"></a></p>
+<h2 class="reference-title">References</h2>
+<ul>
+<li><a href="https://arxiv.org/pdf/2011.13456">Song, Yang, et al. "Score-based generative modeling through stochastic differential equations." arXiv preprint arXiv:2011.13456 (2020)</a></li>
+<li><a href="https://webhome.phy.duke.edu/~rgb/Class/Electrodynamics/Electrodynamics/node51.html">Tutorial: Vector Integration by Parts</a></li>
+<li><a href="https://www.karlin.mff.cuni.cz/~slavik/product/product_integration.pdf">Slavík, Antonín. Product integration, its history and applications. Vol. 29. Prague: Matfyzpress, 2007.</a></li>
+</ul>
+
+</br></br></br></br>
+
+  </article>
+</main>
+
+</body>
+</html>
