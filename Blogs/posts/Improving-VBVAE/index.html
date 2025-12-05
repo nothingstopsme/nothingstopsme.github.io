@@ -246,7 +246,7 @@
   </style>
 
   <title>
-Improving &lt;abbr title=&quot;Vector Binarised Variational AutoEncoder&quot;&gt;VBVAE&lt;/abbr&gt;
+Improving VBVAE
 </title>
   
 	
@@ -361,8 +361,8 @@ MathJax.Hub.Config({
 & \phantom{P_{\text{bi}}(h|v)} \propto \prod_{m=1}^{K} \sigma(S(v)[m]) \nonumber \\
 & Qn_{\text{bi}}(v) = \mu + \Sigma^{0.5} C (argmax_{h}P_{\text{bi}}(h|v)) \nonumber \\
 & \phantom{Qn_{\text{bi}}(v)} = \mu + \Sigma^{0.5} C (argmax_{h} \prod_{m=1}^{K} P_{\text{bi}}(h[m]|v)) \nonumber \\
-& \phantom{Qn_{\text{bi}}(v)} = \mu + \Sigma^{0.5} C 
-\begin{bmatrix} 
+& \phantom{Qn_{\text{bi}}(v)} = \mu + \Sigma^{0.5} C
+\begin{bmatrix}
 argmax_{h[1]} P_{\text{bi}}(h[1]|v) \\
 \vdots \\
 argmax_{h[K]} P_{\text{bi}}(h[K]|v)
@@ -383,7 +383,7 @@ $$</p>
 & P_{\text{-+}}(h|v) = \prod_{m=1}^{K} \frac{exp(S(v)[m] * h[m])}{\sum_{\hat{h}[m] \in \{-1, 1\}} exp(S(v)[m] * \hat{h}[m])} \\
 & \phantom{P_{\text{-+}}(h|v)} = \prod_{m=1}^{K} \frac{exp(S(v)[m] * h[m])}{exp(S(v)[m]) + exp(-S(v)[m])} \\
 & \phantom{P_{\text{-+}}(h|v)} = \prod_{m=1}^{K} P_{\text{-+}}(h[m]|v) \\
-& P_{\text{-+}}(h[m]|v) = 
+& P_{\text{-+}}(h[m]|v) =
 \begin{cases}
 1.0 - (tanh(S(v)[m]) + 1.0) * 0.5, \; if \; h[m] = -1 \\
 (tanh(S(v)[m]) + 1.0) * 0.5, \; if \; h[m] = 1 \\
@@ -393,8 +393,8 @@ $$</p>
 <p>then rewriting $\eqref{eq_Qn_bi_v}$ accordingly:</p>
 <p>$$
 \begin{align}
-& Qn_{\text{-+}}(v) = \mu + \Sigma^{0.5} C 
-\begin{bmatrix} 
+& Qn_{\text{-+}}(v) = \mu + \Sigma^{0.5} C
+\begin{bmatrix}
 argmax_{h[1]} P_{\text{-+}}(h[1]|v) \\
 \vdots \\
 argmax_{h[K]} P_{\text{-+}}(h[K]|v)
@@ -433,7 +433,7 @@ $$</p>
 \end{cases}
 \end{aligned}
 $$</p>
-<h2>Tweak 2: injecting autoregressive dependency into binary strings</h2>
+<h2 id="tweak_2">Tweak 2: injecting autoregressive dependency into binary strings</h2>
 <p>It is well known that autoregression has the capacity of modelling complicated sequences of data; so the idea is with this technique <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr> can produce various binary strings which might be difficult to yield otherwise, resulting in better code space utilisation given the same training time.</p>
 <p>One way to inject such dependency is to modify $\eqref{eq_E_bi_v_h}$ and include an extra auxiliary variable $h_a$, of which the content is assumed given and exactly equal to $h$, plus a function $Ar()$ expressing the autoregressive relationship:</p>
 <p>$$
@@ -462,7 +462,7 @@ $$</p>
 & P_{\text{a,-+}}(h[m]|v, h_a) \\
 & =
 \begin{cases}
-1.0 - (tanh(S(v)[m] + \sum_{1 \le k < m} A[m,k] h_a[k]) + 1.0) * 0.5, \; if \; h[m] = -1 \\ 
+1.0 - (tanh(S(v)[m] + \sum_{1 \le k < m} A[m,k] h_a[k]) + 1.0) * 0.5, \; if \; h[m] = -1 \\
 (tanh(S(v)[m] + \sum_{1 \le k < m} A[m,k] h_a[k]) + 1.0) * 0.5, \; if \; h[m] = 1 \\
 \end{cases}
 \end{aligned}
@@ -470,7 +470,7 @@ $$</p>
 <p>which suggests we only need to update the $tanh()$ terms in $\eqref{eq_Qn_minus_plus_v}$ to obtain the corresponding quantisation function $Qn_{\text{a,-+}}(v)$:</p>
 <p>$$
 \begin{align}
-& Qn_{\text{a,-+}}(v) = \mu + \Sigma^{0.5} C 
+& Qn_{\text{a,-+}}(v) = \mu + \Sigma^{0.5} C
 \underbrace{\begin{bmatrix}
 sign(tanh(S(v)[1])) \\
 \vdots \\
@@ -481,6 +481,21 @@ sign(tanh(S(v)[K]+\sum_{1 \le k < K} A[K,k] h_a[k]))  \\
 \end{align}
 $$</p>
 <p>Note that because $h_a$ is assumed given, entries of $h$ in $Qn_{\text{a,-+}}(v)$ needs to be calculated sequentially (autoregressively) from $1$ to $K$, in order to fulfill that assumption. While this could imply longer computation time due to lack of parallelism, the number of sequential steps $K$, and the consequential time consumption, would not usually go beyond manageability, as the size of <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr>'s code space grows exponetially with respect to $K$ and a samll $K$ might well be sufficient for offering a necessary capacity.</p>
+<p>Additionally, since this tweak makes our posterior estimate, denoted as $q(z|x)$ with $z$ and $x$ being hidden and visible random variable, emit an autoregressive relationship across bits, a prior $p(z)$ which describes data in a similar way might be a better option in this scenario, for facilitating matching between $q(z|x)$ and $p(z)$ and reducing the negative impacts of regularisation. Therefore, instead of adopting the approach of <a href="../VBVAE"><abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr></a> assuming each bit is i.i.d and its two outcomes are eqaully likely so as to drop the <abbr title="Kullback–Leibler divergence">KL</abbr> term in the objective, an autoregressive prior supporting bit-string modelling could be used, for example, <abbr title="Mixtures of Logistic distributions for Bit-strings">MoLB</abbr> as suggested in my previous <a href="../AutoregressiveMoLB/#sampling_bit-strings">post</a>, with the reintroduction of the omitted terms involving the prior:</p>
+<p>$$
+\begin{equation}
+\begin{aligned}
+& Obj_{Qn_{\text{a,-+}}}(x) = log\left(p(x|z=Qn_{\text{a,-+}}(En(x)))\right) \\
+& \phantom{Obj_{Qn_{\text{a,-+}}}(x) =} + log\left(\frac{p(z=Qn_{\text{a,-+}}(En(x)))}{q(z = Qn_{\text{a,-+}}(En(x)))|x)}\right) \\
+& \phantom{Obj_{Qn_{\text{a,-+}}}(x)} = log\left(p(x|z=Qn_{\text{a,-+}}(En(x)))\right) \\
+& \phantom{Obj_{Qn_{\text{a,-+}}}(x) =} + log\left(p(z=Qn_{\text{a,-+}}(En(x)))\right) \\
+& \phantom{Obj_{Qn_{\text{a,-+}}}(x) =} - \underbrace{log\left(q(z = Qn_{\text{a,-+}}(En(x))|x)\right)}_{=\; log(1) \; = \; 0} \\
+& \phantom{Obj_{Qn_{\text{a,-+}}}(x)} = log\left(p(x|z=Qn_{\text{a,-+}}(En(x)))\right) \\
+& \phantom{Obj_{Qn_{\text{a,-+}}}(x) =} + log\left(p(z=Qn_{\text{a,-+}}(En(x)))\right) \\
+\end{aligned}
+\end{equation}
+$$</p>
+<p>where $p(x|z)$ is the likelihood and $En(x)$ is the encoder (possibly parameterised via a neural network) that maps $x$ to the input space of the quantisation function $Qn_{\text{a,-+}}(v)$. This capability of working with an parameterised prior is another testimony to the flexibility of <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr> over <abbr title="Vector Quantised Variational AutoEncoder">VQVAE</abbr>, in that moving gradient estimator to the bit level allows (approximate) gradients to flow more freely, even back to the parameters of the prior!</p>
 <h2>Tweak 3: decoupling shared parameters</h2>
 <p>More specifically, $S(v)$ derived from the conditional of $h$ and the quantisation function itself share two matrices $C$ and $\Sigma$; such sharing imposes unnecessary constraints on those parameters in this use case, and could possibly limit models in expressing diverse $h$. That potential impact can be minimised by just having two separate sets of matrices ($\Sigma_h$, $C_h$) and ($\Sigma_v$, $C_v$), which turns $\eqref{eq_P_a_h_v_h_a}$ and $\eqref{eq_Qn_a_minus_plus}$ into</p>
 <p>$$

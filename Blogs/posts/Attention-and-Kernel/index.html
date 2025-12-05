@@ -582,7 +582,8 @@ $$</p>
 & \phantom{\frac{\partial \mathcal{L}}{\partial (\tilde{V}_{\phi_Z})_{j, a}}} = \sum_{i=j}^{L-1} \frac{\partial \mathcal{L}}{\partial J_{i, a}} \big( \sum_{b=0}^{n-1} (\hat{Q}_{\phi_Z})_{i, b} (\hat{K}_{\phi_Z})_{j, b} \big) \\
 & \phantom{\frac{\partial \mathcal{L}}{\partial (\tilde{V}_{\phi_Z})_{j, a}}} = \sum_{b=0}^{n-1} (\hat{K}_{\phi_Z})_{j, b} \big(\sum_{i=j}^{L-1} (\hat{Q}_{\phi_Z})_{i, b} \frac{\partial \mathcal{L}}{\partial J_{i, a}} \big)  \\
 & \implies \nabla_{(\tilde{V}_{\phi_Z})_j} \mathcal{L} = (\hat{K}_{\phi_Z})_j \underbrace{\big( \sum_{i=j}^{L-1} ((\hat{Q}_{\phi_Z})_i)^T \nabla_{J_i} \mathcal{L} \big)}_{= U_{\tilde{V}_{\phi_Z}}^{j}} \\
-& \phantom{\implies \nabla_{(\tilde{V}_{\phi_Z})_j} \mathcal{L}} = (\hat{K}_{\phi_Z})_j \big(U_{\tilde{V}_{\phi_Z}}^{j+1} + ((\hat{Q}_{\phi_Z})_j)^T \nabla_{J_j} \mathcal{L} \big) \end{aligned}
+& \phantom{\implies \nabla_{(\tilde{V}_{\phi_Z})_j} \mathcal{L}} = (\hat{K}_{\phi_Z})_j \big(U_{\tilde{V}_{\phi_Z}}^{j+1} + ((\hat{Q}_{\phi_Z})_j)^T \nabla_{J_j} \mathcal{L} \big)
+\end{aligned}
 \label{eq:gradient_L_tilde_V_j}
 \end{equation}
 $$</p>

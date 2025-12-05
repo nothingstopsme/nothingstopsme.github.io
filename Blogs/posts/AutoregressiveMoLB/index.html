@@ -246,7 +246,7 @@
   </style>
 
   <title>
-Priors That Unlock the Potential of &lt;abbr title=&quot;Vector Binarised Variational AutoEncoder&quot;&gt;VBVAE&lt;/abbr&gt;
+Priors That Unlock the Potential of VBVAE
 </title>
   
 	
@@ -385,7 +385,7 @@ $$</p>
 <h2 id="sampling_bit-strings">Sampling Bit-strings</h2>
 <p>One of the most exciting ways of utilising the codes generated from <abbr title="Vector Quantised Variational AutoEncoder">VQVAE</abbr> is to fit a probabilistic model (such as autoregressive ones) over that discrete space as an external prior, and set up a generative process via first sampling codes from the learned distribution, and then decoding them with the decoder of <abbr title="Vector Quantised Variational AutoEncoder">VQVAE</abbr> to obtain target samples. While this is still the case for <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr>, the discrete space is now encoded in terms of bit-strings as opposed to integer codes, which means our probalistic models need to be capable of producing samples in that form. How can we do that?</p>
 <p>Indeed, one can always treat bit-strings as some integer codes in its binary form, then with a quick conversion between these two discrete descriptions the same modelling techniques for codes from <abbr title="Vector Quantised Variational AutoEncoder">VQVAE</abbr> can immediately apply; but ironically, that seemingly straightforward approach is rather backward from the perspective of <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr>, as the return of integer codes brings back the limit on the size of the code space that can be manageable, restricting the power of <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr> in exploiting the expressiveness of a greater number of codes (in the form of bit-string).</p>
-<p>Thus for making the most out of <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr> and its bit-string coding, an alternative, named "autoregressive <strong>M</strong>ixtures <em>o</em>f <strong>L</strong>ogistic distributions for <strong>B</strong>it-strings", is proposed based on existing autoregressive models over sequences of codes with a few modifications that turn them into ones over sequences of bit-strings. These changes include:</p>
+<p>Thus for making the most out of <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr> and its bit-string coding, an alternative, named "autoregressive <strong>M</strong>ixtures <em>o</em>f <strong>L</strong>ogistic distributions for <strong>B</strong>it-strings", is proposed to handle sequences of bit-strings based on existing autoregressive models over sequences of codes with a few adjustments. These adjustments include:</p>
 <h3 id="normalisation">Normalisation</h3>
 <p>As the state of a bit ($0$ or $1$) in a bit-string produced by <abbr title="Vector Binarised Variational AutoEncoder">VBVAE</abbr> is determined by how the input reacts to the associated embedding in terms of dot-product, it can be regarded as a quantised intensity in response to the particular embedding as a filter. That perspective allows us to adopt a common practice of normalisation to transform $h$ to $z$ by shifting and rescaling bit values from a discrete space of $\{0, 1\}$ into a continuous one of $[-1, 1]$, which is often used to prepare quantised intensities like RGB colours for a more balanced value distribution across a desired range</p>
 <h3>Bit-strings to Embeddings</h3>

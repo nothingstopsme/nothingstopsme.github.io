@@ -246,7 +246,7 @@
   </style>
 
   <title>
-From &lt;abbr title=&quot;Variational AutoEncoder&quot;&gt;VAE&lt;/abbr&gt;, Hierarchical &lt;abbr title=&quot;Variational AutoEncoder&quot;&gt;VAE&lt;/abbr&gt;, to Variational Diffusion Model
+From VAE, Hierarchical VAE, to Variational Diffusion Model
 </title>
   
 	
@@ -379,7 +379,7 @@ $$</p>
 <figure><img alt="graphical_model_HVAE_4nodes.png" src="/Blogs/static/main/images/Variational-Diffusion-Model/graphical_model_HVAE_4nodes.png" /><figcaption>The graphical model for <abbr title="Hierarchical Variational AutoEncoder">HVAE</abbr> with T = 3</figcaption>
 </figure></p>
 <h2 id="Complexity_Reduction">Reducing the Complexity of <abbr title="Hierarchical Variational AutoEncoder">HVAE</abbr></h2>
-<p>The fully conditional dependency formulated in $\eqref{eq:HVAE_ELBO}$ has the highest capacity for representing the joints, but it also means the cost of modelling grows exponentially as the number of latent variables increases. One way to alleviate these overhands is to introduce the assumption of conditional independency, such as (for brevity, $z_0$ is substituted for $x$):</p>
+<p>The fully conditional dependency formulated in $\eqref{eq:HVAE_ELBO}$ has the highest capacity for representing the joints, but it also means the cost of modelling grows exponentially as the number of latent variables increases. One way to alleviate these overheads is to introduce the assumption of conditional independency, such as (for brevity, $z_0$ is substituted for $x$):</p>
 <p>$$
 \begin{equation}
 \begin{cases}
@@ -423,7 +423,8 @@ $$</p>
 & \phantom{=} - \sum_{i=2}^T E_{q(z_1, \cdots, z_T |z_0)} \big[ KL[ q(z_{i-1}|z_i, z_0) \| p(z_{i-1}|z_i) ] \big] \nonumber \\
 & = E_{q(z_1|z_0)} [ log \; p(z_0|z_1) ] \nonumber \\
 & \phantom{=} - KL [ q(z_T|z_0) \| p(z_T) ] \nonumber \\
-& \phantom{=} - \sum_{i=2}^T E_{q(z_i |z_0)} \big[ KL[ q(z_{i-1}|z_i, z_0) \| p(z_{i-1}|z_i) ] \big] \label{eq:HVAE_CIND_ELBO} \\\end{align}
+& \phantom{=} - \sum_{i=2}^T E_{q(z_i |z_0)} \big[ KL[ q(z_{i-1}|z_i, z_0) \| p(z_{i-1}|z_i) ] \big] \label{eq:HVAE_CIND_ELBO} \\
+\end{align}
 $$</p>
 <p>Notice that when $T=1$, $\eqref{eq:HVAE_CIND_ELBO}$ falls back to:</p>
 <p>$$
@@ -432,11 +433,12 @@ $$</p>
 & \phantom{=} - KL[q(z_1|z_0) \| p(z_1) ] \\
 & \phantom{=} - \underbrace{\sum_{i=2}^{1} E_{q(z_i | z_0)} \big[ KL[ q(z_{i-1}|z_i, z_0) \| p(z_{i-1}|z_i) ] \big]}_{\text{summation over nothing}} \\
 & = E_{q(z_1|z_0)} [ log \; p(z_0|z_1) ] - KL[q(z_1|z_0) \| p(z_1)] \\
-& = E_{q(z_1|x)} [ log \; p(x|z_1) ] - KL[q(z_1|x) \| p(z_1)]\end{aligned}
+& = E_{q(z_1|x)} [ log \; p(x|z_1) ] - KL[q(z_1|x) \| p(z_1)]
+\end{aligned}
 $$</p>
 <p>which is exactly the same as $\eqref{eq:VAE_ELBO_1}$ of <abbr title="Variational AutoEncoder">VAE</abbr>; thus this summation $\sum_{i=2}^T E_{q(z_i |z_0)} \big[ KL[ q(z_{i-1}|z_i, z_0) \| p(z_{i-1}|z_i) ] \big]$ can be viewed as additional criteria to makes sure that for every newly introduced latent variable $z_{i-1}$, its conditionals ($q(z_{i-1}|z_i, z_0)$ and $p(z_{i-1}|z_i)$) found for maximising $\eqref{eq:HVAE_CIND_ELBO}$ are similar on average.</p>
 <h2><abbr title="Variational Diffusion Model">VDM</abbr></h2>
-<p>The key of <abbr title="Variational Diffusion Model">VDM</abbr> is the concept of <a href="https://en.wikipedia.org/wiki/Diffusion">diffusion processes</a>, in which the substance of interest gradually and randomly spreads out. Just like particle diffusion in physics, in <abbr title="Variational Diffusion Model">VDM</abbr> data representation is set to be the one undergoing a diffusion process over time, and at the end of the process, one would expect it becomes completely randomised; in other words, the diffusion process of <abbr title="Variational Diffusion Model">VDM</abbr> will turn data into noise. </p>
+<p>The key of <abbr title="Variational Diffusion Model">VDM</abbr> is the concept of <a href="https://en.wikipedia.org/wiki/Diffusion">diffusion processes</a>, in which the substance of interest gradually and randomly spreads out. Just like particle diffusion in physics, in <abbr title="Variational Diffusion Model">VDM</abbr> data representation is set to be the one undergoing a diffusion process over time, and at the end of the process, one would expect it becomes completely randomised; in other words, the diffusion process of <abbr title="Variational Diffusion Model">VDM</abbr> will turn data into noise.</p>
 <p>For continuous data, such a diffusion process can be formulated as the addition of various degrees of standard gaussian noise to the observed variable $z_0$:</p>
 <p>$$
 \begin{equation}
@@ -458,37 +460,39 @@ $$</p>
 <p>$$
 \begin{equation}
 \begin{aligned}
-& KL[q \| p] \\
-& = \int q(z_0, z_1, \cdots, z_T) \\
+& KL[q \| p]  \\
+& = -\int q(z_0, z_1, \cdots, z_T)  \\
 & \phantom{=} log \big(\frac{p(z_0, z_1, \cdots, z_T)}{q(z_0, z_1, \cdots, z_T)} \big) dz_0 \dots dz_T  \\
-& = \int q(z_1, \cdots, z_T | z_0) q(z_0) \\
-& \phantom{=} log \big(\frac{p(z_0, z_1, \cdots, z_T)}{q(z_1, \cdots, z_T | z_0) q(z_0)} \big) dz_0 \dots dz_T  \\
-& = E_{q(z_0)}[\int q(z_1, \cdots, z_T | z_0) \\
-& \phantom{= E_{q(z_0)}[\int} log \big(\frac{\prod_{i=1}^{T-1} p(z_i | z_{>i}) p(z_T)}{q(z_1, \cdots, z_T | z_0)} \big) dz_1 \dots dz_T] \\
-& \phantom{=} - E_{q(z_0)} [ log \big( q(z_0) \big) ] \\
-& = E_{q(z_0)} [\int q(z_1, \cdots, z_T | z_0) \\
-& \phantom{= E_{q(z_0)} [ \int} log \big(\frac{\prod_{i=1}^{T-1} p(z_i | z_{>i}) p(z_T)}{q(z_1, \cdots, z_T | z_0)} \big) dz_1 \dots dz_T ] \\
-& \phantom{=} + entropy(q(z_0))\end{aligned}
+& = -\int q(z_1, \cdots, z_T | z_0) q(z_0)  \\
+& \phantom{=} log \big(\frac{\prod_{i=0}^{T-1} p(z_i | z_{>i}) p(z_T)}{q(z_1, \cdots, z_T | z_0) q(z_0)} \big) dz_0 \dots dz_T   \\
+& = -E_{q(z_0)}[\int q(z_1, \cdots, z_T | z_0)  \\
+& \phantom{= E_{q(z_0)}[\int} log \big(\frac{\prod_{i=0}^{T-1} p(z_i | z_{>i}) p(z_T)}{q(z_1, \cdots, z_T | z_0)} \big) dz_1 \dots dz_T]  \\
+& \phantom{=} + E_{q(z_0)} [ log \big( q(z_0) \big) ]  \\
+& = -E_{q(z_0)} [\int q(z_1, \cdots, z_T | z_0)  \\
+& \phantom{= E_{q(z_0)} [ \int} log \big(\frac{\prod_{i=0}^{T-1} p(z_i | z_{>i}) p(z_T)}{q(z_1, \cdots, z_T | z_0)} \big) dz_1 \dots dz_T ]  \\
+& \phantom{=} - entropy(q(z_0))
+\end{aligned}
 \label{eq:KL_for_consistency_1}
 \end{equation}
 $$</p>
-<p>Since $entropy(q(z_0))$ is constant with respect to all $p(z_i | z_{>i})$ and $p(z_T)$, it can be safely omitted without changing the consistency criterion, resulting in:</p>
+<p>Since $entropy(q(z_0))$ is constant, to impose this criterion, i.e. to minimise $KL[q \| p]$, is equivalent to maximise:</p>
 <p>$$
 \require{cancel}
 \begin{equation}
 \begin{aligned}
 & E_{q(z_0)} [ \int q(z_1, \cdots, z_T | z_0) \\
-& \phantom{= E_{q(z_0)} [ \int} log \big(\frac{\prod_{i=1}^{T-1} p(z_i | z_{>i}) p(z_T)}{q(z_1, \cdots, z_T | z_0)} \big) dz_1 \dots dz_T ] \\
-& \phantom{=} + \cancel{entropy(q(z_0))} \\
+& \phantom{= E_{q(z_0)} [ \int} log \big(\frac{\prod_{i=0}^{T-1} p(z_i | z_{>i}) p(z_T)}{q(z_1, \cdots, z_T | z_0)} \big) dz_1 \dots dz_T ] \\
+& = E_{q(z_0)} [ \int q(z_1, \cdots, z_T | z_0) \\
+& \phantom{= E_{q(z_0)} [ \int} log \big(\frac{p(z_0, z_1, \cdots, z_T)}{q(z_1, \cdots, z_T | z_0)} \big) dz_1 \dots dz_T ] \\
 & = \sum_{d_x \in D_x} \frac{1}{| D_x |} \Big( \int q(z_1, \cdots, z_T | z_0 = d_x) \\
 & \phantom{= \sum_{d_x \in D_x} \frac{1}{| D_x |} \Big( \int} log \big(\frac{p(z_0 = d_x, z_1, \cdots, z_T)}{q(z_1, \cdots, z_T | z_0 = d_x)} \big) dz_1 \dots dz_T \Big) \\
-& \le \sum_{d_x \in D_x} \frac{1}{| D_x |} \Big( \int log \big( p(z_0 = d_x, z_1, \cdots, z_T) dz_1 \dots dz_T \big) \Big) \\
-& \sum_{d_x \in D_x} \frac{1}{| D_x |} log \big( p(z_0 = d_x) \big) \\
+& \le \sum_{d_x \in D_x} \frac{1}{| D_x |} \Big( log \big( \int p(z_0 = d_x, z_1, \cdots, z_T) dz_1 \dots dz_T \big) \Big) \\
+& = \sum_{d_x \in D_x} \frac{1}{| D_x |} log \big( p(z_0 = d_x) \big) \\
 \end{aligned}
 \label{eq:KL_for_consistency_2}
 \end{equation}
 $$</p>
-<p>Looking familiar, doesn't it? $\eqref{eq:KL_for_consistency_2}$ is exactly the same as the expectation of $\eqref{eq:HVAE_ELBO}$ over the data distribution with $z_0$ in place of $x$; therefore it is as though building a <abbr title="Hierarchical Variational AutoEncoder">HVAE</abbr> given a fixed auxiliary distribution $q$ derived from the diffusion process according to $\eqref{eq:gaussian_noise_addition}$, and the same trick of complexity reduction discussed in this <a href="#Complexity_Reduction">section</a> can be applied immediately to give us the final objective $\sum_{d_x \in D_x} \frac{1}{\| D_x \|} Obj_{\text{VDM}}(z_0 = d_x)$, where</p>
+<p>which is just the same maximisation target as $\eqref{eq:HVAE_ELBO}$, except that the expectation over the data distribution has also been included in $\eqref{eq:KL_for_consistency_2}$; therefore, from the view of <abbr title="Hierarchical Variational AutoEncoder">HVAE</abbr> modelling, <abbr title="Variational Diffusion Model">VDM</abbr> can be interpreted as a <abbr title="Hierarchical Variational AutoEncoder">HVAE</abbr> given a fixed auxiliary distribution $q$ derived from the diffusion process according to $\eqref{eq:gaussian_noise_addition}$, and according to the trick of complexity reduction discussed in this <a href="#Complexity_Reduction">section</a>, its objective might be formulated as $\sum_{d_x \in D_x} \frac{1}{\| D_x \|} Obj_{\text{VDM}}(z_0 = d_x)$, where</p>
 <p>$$
 \begin{equation}
 \begin{aligned}
@@ -500,12 +504,12 @@ $$</p>
 \label{eq:Obj_VDM}
 \end{equation}
 $$</p>
-<p>is copied from $\eqref{eq:HVAE_CIND_ELBO}$. Note that $\eqref{eq:Obj_VDM}$ goes particularly well with our diffusion process, because:</p>
+<p>Note that $\eqref{eq:Obj_VDM}$ goes particularly well with our diffusion process, because:</p>
 <ul>
 <li>We can easily sample from $q(z_i | z_0)$ for any $1 \le i \le T$, so in practice all expectations appearing in $\eqref{eq:Obj_VDM}$ can be estimated with low variance via <em>Monte Carlo estimate</em>.</li>
 <li>When choosing the distribution of $p(z_T)$ (just as picking the prior in <abbr title="Variational AutoEncoder">VAE</abbr>), if $p(z_T)$ is set to be a standard gaussian, then $KL [ q(z_T|z_0) \| p(z_T) ] = 0$ (due to the fact that $q(z_T|z_0)$ is also $N(0, I)$)</li>
 </ul>
-<p>Nonetheless, there are still three missing pieces before we can use $\eqref{eq:Obj_VDM}$ to start to learn a <abbr title="Variational Diffusion Model">VDM</abbr>:  </p>
+<p>Nonetheless, there are still three missing pieces before we can use $\eqref{eq:Obj_VDM}$ to start to learn a <abbr title="Variational Diffusion Model">VDM</abbr>:</p>
 <h3>What distribution is $q(z_{i-1}|z_i, z_0)$?</h3>
 <p>It is indeed obscure as we can not read it out directly from $\eqref{eq:gaussian_noise_addition}$, but research has demonstrated that, given $q(z_T | z_0) = N(\sqrt{\bar{\alpha}_T} z_0, (1 - \bar{\alpha}_T) I )$, the following gaussian matches our diffusion process</p>
 <p>$$
@@ -517,7 +521,7 @@ $$</p>
 \label{eq:q_z_i_1_given_z_i_z_0}
 \end{equation}
 $$</p>
-<p>with $\sigma_i^2$ being the magnitude of the isotropic variance at the time step $i$. To show that is true, assuming that $q(z_i | z_0) = N(\sqrt{\bar{\alpha}_i} z_0, (1 - \bar{\alpha}_i) I )$, then </p>
+<p>with $\sigma_i^2$ being the magnitude of the isotropic variance at the time step $i$. To show that is true, assuming that $q(z_i | z_0) = N(\sqrt{\bar{\alpha}_i} z_0, (1 - \bar{\alpha}_i) I )$, then</p>
 <p>$$
 \begin{equation}
 \begin{aligned}
@@ -541,7 +545,8 @@ $$</p>
 \begin{aligned}
 & \frac{M_i^T M_i}{\sigma_i^2} \\
 & = \frac{\bar{\alpha}_{i-1}}{\sigma_i^2} z_0^T z_0 + 2 \frac{\sqrt{\bar{\alpha}_{i-1}} \sqrt{1-\bar{\alpha}_{i-1} - \sigma_i^2}}{\sigma_i^2 \sqrt{1 - \bar{\alpha}_i}} (z_0^T z_i - \sqrt{\bar{\alpha}_i} z_0^T z_0)\\
-& \phantom{=} \frac{1-\bar{\alpha}_{i-1} - \sigma_i^2}{\sigma_i^2 (1 - \bar{\alpha}_i)} (z_i^T z_i - 2\sqrt{\bar{\alpha}_i} z_i^T z_0 + \bar{\alpha}_i z_0^T z_0)\end{aligned}
+& \phantom{=} \frac{1-\bar{\alpha}_{i-1} - \sigma_i^2}{\sigma_i^2 (1 - \bar{\alpha}_i)} (z_i^T z_i - 2\sqrt{\bar{\alpha}_i} z_i^T z_0 + \bar{\alpha}_i z_0^T z_0)
+\end{aligned}
 $$</p>
 <p>therefore</p>
 <p>$$
@@ -549,7 +554,7 @@ $$</p>
 \begin{aligned}
 & g(z_0, z_{i-1}, z_i) \\
 & = exp\Big(-\frac{1}{2}\big( \frac{1}{1 - \bar{\alpha}_i} z_i^T z_i + \frac{1-\bar{\alpha}_{i-1} - \sigma_i^2}{\sigma_i^2 (1 - \bar{\alpha}_i)} z_i^T z_i \\
-& \phantom{= exp\Big(-\frac{1}{2}\big(} - 2 \frac{ \sqrt{\bar{\alpha}_i}}{1 - \bar{\alpha}_i} z_i^T z_0 \\ 
+& \phantom{= exp\Big(-\frac{1}{2}\big(} - 2 \frac{ \sqrt{\bar{\alpha}_i}}{1 - \bar{\alpha}_i} z_i^T z_0 \\
 & \phantom{= exp\Big(-\frac{1}{2}\big(} + 2 \frac{\sqrt{\bar{\alpha}_{i-1}} \sqrt{1-\bar    {\alpha}_{i-1} - \sigma_i^2}}{\sigma_i^2 \sqrt{1 - \bar{\alpha}_i}} z_i^T z_0 \\
 & \phantom{= exp\Big(-\frac{1}{2}\big(} - 2 \frac{(1-\bar{\alpha}_{i-1} - \sigma_i^2) \sqrt{\bar{\alpha}_i}}{\sigma_i^2 (1 - \bar{\alpha}_i)}) z_i^T z_0 \\
 & \phantom{= exp\Big(-\frac{1}{2}\big(} - 2 \frac{\sqrt{1-\bar{\alpha}_{i-1} -     \sigma_i^2}}{\sigma_i^2 \sqrt{1 - \bar{\alpha}_i}} z_i^T z_{i-1} \\
@@ -557,15 +562,16 @@ $$</p>
 & = exp\Big(-\frac{1}{2}\big( \frac{1-\bar{\alpha}_{i-1}}{\sigma_i^2 (1 - \bar{\alpha}_i)} z_i^T z_i \\
 & \phantom{= exp\Big(-\frac{1}{2}\big(} - 2 \frac{1-\bar{\alpha}_{i-1}}{\sigma_i^2 (1 - \bar{\alpha}_i)} z_i^T \nu(z_0, z_{i-1}) \big) \Big) \\
 & = exp\Big(-\frac{1}{2}\big( \frac{1-\bar{\alpha}_{i-1}}{\sigma_i^2 (1 - \bar{\alpha}_i)} \| z_i - \nu(z_0, z_{i-1}) \|^2_2 \big) \Big) \\
-& \phantom{= exp} exp\Big(\frac{1}{2}\big( \frac{1-\bar{\alpha}_{i-1}}{\sigma_i^2 (1 - \bar{\alpha}_i)} \nu(z_0, z_{i-1})^T \nu(z_0, z_{i-1}) \big) \Big)\end{aligned}
+& \phantom{= exp} exp\Big(\frac{1}{2}\big( \frac{1-\bar{\alpha}_{i-1}}{\sigma_i^2 (1 - \bar{\alpha}_i)} \nu(z_0, z_{i-1})^T \nu(z_0, z_{i-1}) \big) \Big)
+\end{aligned}
 \label{eq:g_of_z_0_z_i_minus_1_z_i}
 \end{equation}
 $$</p>
-<p>where </p>
+<p>where</p>
 <p>$$
 \begin{aligned}
 & \nu(z_0, z_{i-1}) \\
-& = (\sqrt{\bar{\alpha}_i} - \frac{\sqrt{(1-\bar{\alpha}_i)\bar{\alpha}_{i-1}(1-\bar{\alpha}_{i-1}-\sigma_i^2)}}{1-\bar{\alpha}_{i-1}}) z_0 \\ 
+& = (\sqrt{\bar{\alpha}_i} - \frac{\sqrt{(1-\bar{\alpha}_i)\bar{\alpha}_{i-1}(1-\bar{\alpha}_{i-1}-\sigma_i^2)}}{1-\bar{\alpha}_{i-1}}) z_0 \\
 & \phantom{=} + \frac{\sqrt{(1-\bar{\alpha}_i)(1-\bar{\alpha}_{i-1}-\sigma_i^2)}}{1-\bar{\alpha}_{i-1}} z_{i-1}
 \end{aligned}
 $$</p>
@@ -598,7 +604,8 @@ $$</p>
 & M_i(z_0, z_i) \\
 & = \sqrt{\bar{\alpha}_{i-1}} z_0 + \sqrt{1-\bar{\alpha}_{i-1} - \sigma_i^2} \frac{z_i - \sqrt{\bar{\alpha}_i} z_0}{\sqrt{1 - \bar{\alpha}_i}} \\
 & = \underbrace{\frac{\sqrt{\bar{\alpha}_{i-1}(1-\bar{\alpha}_i)} - \sqrt{\bar{\alpha}_i (1 - \bar{\alpha}_{i-1}- \sigma_i^2)}}{\sqrt{1-\bar{\alpha}_i}}}_{w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i)} z_0 \\
-& \phantom{=} + \underbrace{\frac{\sqrt{1 - \bar{\alpha}_{i-1} - \sigma_i^2}}{\sqrt{1 - \bar{\alpha}_i}}}_{w_2(\bar{\alpha}_{i-1}, \bar{\alpha}_i)} z_i\end{aligned}
+& \phantom{=} + \underbrace{\frac{\sqrt{1 - \bar{\alpha}_{i-1} - \sigma_i^2}}{\sqrt{1 - \bar{\alpha}_i}}}_{w_2(\bar{\alpha}_{i-1}, \bar{\alpha}_i)} z_i
+\end{aligned}
 \label{eq:M_i_z_0_z_i}
 \end{equation}
 $$</p>
@@ -607,7 +614,8 @@ $$</p>
 \begin{equation}
 \begin{aligned}
 & p(z_{i-1}|z_i) \\
-& = N(w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i) f(i, z_i) + w_2(\bar{\alpha}_{i-1}, \bar{\alpha}_i) z_i, \sigma_i^2 I)\end{aligned}
+& = N(w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i) f(i, z_i) + w_2(\bar{\alpha}_{i-1}, \bar{\alpha}_i) z_i, \sigma_i^2 I)
+\end{aligned}
 \label{eq:p_z_i_minus_1_given_z_i}
 \end{equation}
 $$</p>
@@ -616,10 +624,11 @@ $$</p>
 \begin{equation}
 \begin{aligned}
 & KL[ q(z_{i-1}|z_i, z_0) \| p(z_{i-1}|z_i) ] \\
-& = \frac{1}{2} \Big( log \big(\frac{det(\sigma_i^2 I)}{det(\sigma_i^2 I)} \big) - trace(I) + trace(\frac{1}{\sigma_i^2} I \sigma_i^2 I) \\ 
-& \phantom{= \frac{1}{2} \Big(} + \frac{1}{\sigma_i^2} \|(w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i) f(i, z_i) + w_2(\bar{\alpha}_{i-1}, \bar{\alpha}_i) z_i) \\ 
+& = \frac{1}{2} \Big( log \big(\frac{det(\sigma_i^2 I)}{det(\sigma_i^2 I)} \big) - trace(I) + trace(\frac{1}{\sigma_i^2} I \sigma_i^2 I) \\
+& \phantom{= \frac{1}{2} \Big(} + \frac{1}{\sigma_i^2} \|(w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i) f(i, z_i) + w_2(\bar{\alpha}_{i-1}, \bar{\alpha}_i) z_i) \\
 & \phantom{= \frac{1}{2} \Big( + \frac{1}{\sigma_i^2} \|} - (w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i) z_0 + w_2(\bar{\alpha}_{i-1}, \bar{\alpha}_i) z_i)\|^2_2 \Big) \\
-& = \frac{w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i)^2}{2 \sigma_i^2} \| f(i, z_i) - z_0 \|_2^2\end{aligned}
+& = \frac{w_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i)^2}{2 \sigma_i^2} \| f(i, z_i) - z_0 \|_2^2
+\end{aligned}
 \label{eq:KL_q_p_simplified}
 \end{equation}
 $$</p>
@@ -636,7 +645,8 @@ $$</p>
 & \; \\
 & KL[ q(z_{i-1}|z_i, z_0) \| p(z_{i-1}|z_i) ] \\
 & = \frac{\hat{w}_1(\bar{\alpha}_{i-1}, \bar{\alpha}_i)^2}{2 \sigma_i^2} \| e(i, z_i) - \epsilon_i \|_2^2
-\end{aligned}\label{eq:equivalent}
+\end{aligned}
+\label{eq:equivalent}
 \end{equation}
 $$</p>
 <p>Compared with $f(i, z_i)$ from the original form, the function $e(i, z_i)$ in the equivalent has a different meaning in that it is to estimate the noise present in $z_i$, and this change reportedly results in a better model.</p>
@@ -647,7 +657,7 @@ $$</p>
 \begin{aligned}
 & p(z_0|z_1) \\
 & = N(f(1, z_1), \sigma^2 I) \\
-& = N(\frac{z_1 - \sqrt{1-\bar{\alpha}_1}e(1, z_1)}{\sqrt{\bar{\alpha}_1}}, \sigma_1^2 I) 
+& = N(\frac{z_1 - \sqrt{1-\bar{\alpha}_1}e(1, z_1)}{\sqrt{\bar{\alpha}_1}}, \sigma_1^2 I)
 \end{aligned}
 \label{eq:p_z_0_z_1}
 \end{equation}
@@ -669,7 +679,7 @@ $$</p>
 & Obj_{\text{heuristic VDM}}(z_0) \\
 & = - E_{\epsilon_1 \sim N(0, I)} [ \| e(1, z_1) - \epsilon_1 \|_2^2 ] \\
 & \phantom{=} - \sum_{i=2}^T E_{\epsilon_i \sim N(0, I)} [ \| e(i, z_i) - \epsilon_i \|_2^2 ] \\
-& = - \sum_{i=1}^T E_{\epsilon_i \sim N(0, I)} [ \| e(i, z_i) - \epsilon_i \|_2^2 ] 
+& = - \sum_{i=1}^T E_{\epsilon_i \sim N(0, I)} [ \| e(i, z_i) - \epsilon_i \|_2^2 ]
 \end{aligned}
 \label{eq:Obj_heuristic_VDM}
 \end{equation}
